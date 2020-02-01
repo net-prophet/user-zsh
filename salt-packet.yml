@@ -1,0 +1,7 @@
+requires_environment:
+  - user
+  - home
+  - uid
+  - fullname
+  - shell
+  - ssh_key
