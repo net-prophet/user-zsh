@@ -6,6 +6,7 @@ $USER:
 direnv: pkg.installed
 autojump: pkg.installed
 
+zsh: pkg.installed
 htop: pkg.installed
 tmux: pkg.installed
 jq: pkg.installed
