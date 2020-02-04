@@ -1,7 +1,7 @@
-$USER:
+$USER-shell:
   user.present:
-    - shell: $SHELL
-
+    - name: $USER
+    - shell: /usr/bin/zsh
 # Apps
 direnv: pkg.installed
 autojump: pkg.installed
