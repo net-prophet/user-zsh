@@ -49,7 +49,22 @@ _load_settings() {
 _load_settings "$HOME/.zsh/config"
 
 # Local config
-[[ -f ~/.zshrc.local ]] && echo $blue "Loading ~/.zshrc.local..." && source ~/.zshrc.local
+[[ -f ~/.zshrc.local ]] && echo $blue"[LOADING] ~/.zshrc.local..." && source ~/.zshrc.local
 
 # aliases
-[[ -f ~/.aliases ]] && source ~/.aliases
+[[ -f ~/.aliases ]] && echo $blue"[LOADING] ~/.aliases" && source ~/.aliases
+
+# Secrets
+if [[ -f ~/.secrets/zsh/env ]]; then
+  cd ~/.secrets
+  if git ls-tree -r master --name-only | sed 's/.*/"&"/' | xargs grep -qsPa "\x00GITCRYPT"; then
+    echo $yellow"[WARNING] ~/.secrets is locked, attempting to open it..."
+    python3 $HOME/.secrets/mount_secrets.py
+  fi;
+  if ! git ls-tree -r master --name-only | sed 's/.*/"&"/' | xargs grep -qsPa "\x00GITCRYPT"; then
+    echo $green"[UNLOCKED] Loading ~/.secrets/zsh/env...";
+    source ~/.secrets/zsh/env
+  else
+    echo $red"[ERROR] ~/.secrets couldn't be unlocked..."
+  fi;
+fi
