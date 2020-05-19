@@ -55,17 +55,19 @@ _load_settings "$HOME/.zsh/config"
 [[ -f ~/.aliases ]] && echo $blue"[LOADING] ~/.aliases" && source ~/.aliases
 
 # Secrets
-if [[ -f ~/.secrets/zsh/env ]]; then
-  pushd -q ~/.secrets
-  if git ls-tree -r master --name-only | sed 's/.*/"&"/' | xargs grep -qsPa "\x00GITCRYPT"; then
+if [[ -f $HOME/.secrets/locked ]]; then
+  if $HOME/.secrets/locked ; then
     echo $yellow"[WARNING] ~/.secrets is locked, attempting to open it..."
     python3 $HOME/.secrets/mount_secrets.py
   fi;
-  if ! git ls-tree -r master --name-only | sed 's/.*/"&"/' | xargs grep -qsPa "\x00GITCRYPT"; then
+
+  if ! $HOME/.secrets/locked ; then
     echo $green"[UNLOCKED] Loading ~/.secrets/zsh/env...";
     source ~/.secrets/zsh/env
   else
     echo $red"[ERROR] ~/.secrets couldn't be unlocked..."
   fi;
+
   popd -q
+
 fi
