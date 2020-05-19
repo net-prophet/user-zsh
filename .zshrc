@@ -56,7 +56,7 @@ _load_settings "$HOME/.zsh/config"
 
 # Secrets
 if [[ -f ~/.secrets/zsh/env ]]; then
-  cd ~/.secrets
+  pushd -q ~/.secrets
   if git ls-tree -r master --name-only | sed 's/.*/"&"/' | xargs grep -qsPa "\x00GITCRYPT"; then
     echo $yellow"[WARNING] ~/.secrets is locked, attempting to open it..."
     python3 $HOME/.secrets/mount_secrets.py
@@ -67,4 +67,5 @@ if [[ -f ~/.secrets/zsh/env ]]; then
   else
     echo $red"[ERROR] ~/.secrets couldn't be unlocked..."
   fi;
+  popd -q
 fi
