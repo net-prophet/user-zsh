@@ -58,7 +58,9 @@ _load_settings "$HOME/.zsh/config"
 if [[ -f $HOME/.secrets/locked ]]; then
   if $HOME/.secrets/locked ; then
     echo $yellow"[WARNING] ~/.secrets is locked, attempting to open it..."
+    pushd $HOME/.secrets
     python3 $HOME/.secrets/mount_secrets.py
+    popd -q
   fi;
 
   if ! $HOME/.secrets/locked ; then
@@ -67,7 +69,5 @@ if [[ -f $HOME/.secrets/locked ]]; then
   else
     echo $red"[ERROR] ~/.secrets couldn't be unlocked..."
   fi;
-
-  popd -q
 
 fi
